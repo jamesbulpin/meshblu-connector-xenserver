@@ -1,38 +1,53 @@
 http = require 'http'
+debug = require('debug')('meshblu-connector-xenserver:VmStart')
 
 class VmStart
   constructor: ({@connector}) ->
     throw new Error 'VmStart requires connector' unless @connector?
-    console.log "foo"
     
   do: ({data}, callback) =>
     return callback @_userError(422, 'data.name is required') unless data?.name?
     
     {name} = data
 
-    xapi = @connector.getXapi()
-    
-    xapi.call('VM.get_by_name_label', name).then((vmref) =>
-      metadata =
-        code: 200
-        status: http.STATUS_CODES[200]
+    metadata =
+      code: 200
+      status: http.STATUS_CODES[200]
 
-      if !vmref || vmref.length == 0
-        message = "Cannot find VM " + name
-        status = "error"
-        data = {message, status}
-        callback null, {metadata, data}
-        return
+    @connector.getXapi().then((xapi) =>
+      xapi.call('VM.get_by_name_label', name).then((vmref) =>
+
+        if !vmref || vmref.length == 0
+          message = "Cannot find VM " + name
+          status = "error"
+          data = {message, status}
+          callback null, {metadata, data}
+          return
               
-      xapi.call('VM.start', vmref[0], false, false)
-
-      message = "Starting VM " + name
-      status = "ok"
-      data = {message, status}
+        xapi.call('VM.start', vmref[0], false, false).then((response) =>
       
-      console.log data
+          message = "Starting VM " + name
+          status = "ok"
+          data = {message, status}
+      
+          debug "Success " + data
+          callback null, {metadata, data}
+      
+        ).catch((error) =>
+          message = error.toString()
+          status = "error"
+          data = {message, status}
 
+          debug "Error " + data
+          callback null, {metadata, data}
+        )
+      )
+    ).catch((error) =>
+      message = "XenServer connection not available for VM " + name
+      status = "error"
+      data = {message, status}
       callback null, {metadata, data}
+      return
     )
       
   _userError: (code, message) =>
