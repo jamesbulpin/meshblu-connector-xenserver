@@ -1,0 +1,67 @@
+language: cpp
+os:
+- linux
+- osx
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
+    - g++-4.8-multilib
+    - gcc-multilib
+    - build-essential
+    - libbluetooth-dev
+    - libudev-dev
+    - libusb-1.0-0-dev
+env:
+  global:
+  - DEBUG_CORE_DUMP="true"
+  matrix:
+  - PACKAGER_NODE_VERSION="5.5" PACKAGER_ARCH="amd64" MAIN_BUILD="true"
+  - PACKAGER_NODE_VERSION="5.5" PACKAGER_ARCH="386"
+matrix:
+  fast_finish: true
+  exclude:
+  - os: osx
+    env: PACKAGER_NODE_VERSION="5.5" PACKAGER_ARCH="386"
+branches:
+  only:
+  - "/^v[0-9]/"
+before_install:
+- ulimit -c unlimited -S
+- PACKAGER_URL="https://meshblu-connector.octoblu.com/tools/packager/latest"
+- curl -fsS "${PACKAGER_URL}/travis_install_node.sh" -o /tmp/travis_install_node.sh
+- chmod +x /tmp/travis_install_node.sh
+- ". /tmp/travis_install_node.sh"
+- if [ "$TRAVIS_OS_NAME" == "linux" -a "$MAIN_BUILD" == "true" ]; then export NPM_PUBLISH="true"; fi
+install:
+- npm install --build-from-source
+script:
+- npm test
+before_deploy:
+- npm prune --production
+- npm install meshblu-connector-packager
+- npm dedupe
+- npm install -g flatten-packages
+- flatten-packages
+- npm run generate:package
+- npm run generate:schema
+- cp schemas.json deploy
+deploy:
+- provider: releases
+  api_key:
+    [github-release-key]
+  file_glob: true
+  file:
+  - "deploy/*"
+  skip_cleanup: true
+  on:
+    tags: true
+- provider: npm
+  email: [npm-email]
+  api_key:
+    [npm-release-key]
+  on:
+    tags: true
+    condition: "$NPM_PUBLISH = true"

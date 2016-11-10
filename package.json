@@ -1,0 +1,54 @@
+{
+  "name": "meshblu-connector-xenserver",
+  "version": "1.0.0",
+  "description": "Meshblu Connector ",
+  "homepage": "https://github.com/jamesbulpin/meshblu-connector-xenserver",
+  "bugs": "https://github.com/jamesbulpin/meshblu-connector-xenserver/issues",
+  "author": {
+    "name": "James Bulpin",
+    "url": "https://github.com/jamesbulpin"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jamesbulpin/meshblu-connector-xenserver.git"
+  },
+  "scripts": {
+    "start": "meshblu-connector-runner",
+    "test": "mocha",
+    "generate:package": "meshblu-connector-packager",
+    "generate:schema": "meshblu-connector-schema-generator > schemas.json"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coffee-coverage": "^1.0.1",
+    "mocha": "^2.4.5",
+    "segfault-handler": "^1.0.0",
+    "sinon": "^1.17.3",
+    "sinon-chai": "^2.8.0"
+  },
+  "dependencies": {
+    "coffee-script": "^1.10.0",
+    "debug": "^2.2.0",
+    "fs-cson": "^0.3.2",
+    "meshblu-config": "^4.0.0",
+    "meshblu-connector-runner": "^9.1.2",
+    "meshblu-connector-schema-generator": "^2.1.0"
+  },
+  "meshbluConnector": {
+    "githubSlug": "jamesbulpin/meshblu-connector-xenserver"
+  },
+  "platformDependencies": {
+    "darwin": [],
+    "win32": [],
+    "win64": [],
+    "linux": [],
+    "android": null,
+    "ios": null
+  },
+  "license": "MIT",
+  "keywords": [
+    "meshblu-connector",
+    "gateblu"
+  ]
+}
