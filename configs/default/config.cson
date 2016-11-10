@@ -5,9 +5,17 @@ properties:
     title: "Options"
     type: "object"
     properties:
-      example:
-        title: "Example String"
+      serveraddress:
+        title: "XenServer URL"
+        type: "string"
+      username:
+        title: "XenServer username"
+        type: "string"
+      password:
+        title: "XenServer password"
         type: "string"
     required: [
-      "example"
+      "serveraddress",
+      "username",
+      "password"
     ]

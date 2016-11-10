@@ -35,7 +35,7 @@ $ npm run package
 
 The MIT License (MIT)
 
-Copyright 2016 Octoblu Inc.
+Copyright 2016 Citrix Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
