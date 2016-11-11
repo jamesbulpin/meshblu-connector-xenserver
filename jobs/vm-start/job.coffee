@@ -26,7 +26,7 @@ class VmStart
               
         xapi.call('VM.start', vmref[0], false, false).then((response) =>
       
-          message = "Starting VM " + name
+          message = "Started VM " + name
           status = "ok"
           data = {message, status}
       

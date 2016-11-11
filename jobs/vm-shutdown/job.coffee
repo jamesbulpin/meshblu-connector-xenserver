@@ -26,7 +26,7 @@ class VmShutdown
               
         xapi.call('VM.shutdown', vmref[0]).then((response) =>
       
-          message = "Shutting down VM " + name
+          message = "Shutdown complete for VM " + name
           status = "ok"
           data = {message, status}
 
