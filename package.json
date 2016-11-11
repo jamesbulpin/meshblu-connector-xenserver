@@ -35,7 +35,8 @@
     "mocha-osx-reporter": "^0.1.2",
     "nyc": "^8.3.0",
     "sinon": "^1.17.4",
-    "sinon-chai": "^2.8.0"
+    "sinon-chai": "^2.8.0",
+    "simple-mock": "^0.7.2"
   },
   "dependencies": {
     "coffee-script": "^1.10.0",

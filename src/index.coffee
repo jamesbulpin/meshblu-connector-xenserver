@@ -6,6 +6,8 @@ class Connector extends EventEmitter
   constructor: ->
     @xapi = null
     
+  mockXapi: (xapi) ->
+    
   getXapi: ->
     return new Promise((resolve, reject) =>
       if @xapi && (@xapi.status == "connected")
@@ -21,6 +23,7 @@ class Connector extends EventEmitter
             user: @username
             password: @password
           readOnly: false)
+        @mockXapi @xapi
         @xapi.connect().then((result) =>
           debug "Xapi connect success"
           resolve(@xapi)
