@@ -38,7 +38,7 @@ deploy:
 - provider: GitHub
   description: 'Meshblu Connector Bundle'
   auth_token:
-    [github-release-key]
+    secure: tl31x1o9e0qlp44ciuau
   artifact: Connector
   draft: false
   prerelease: false
