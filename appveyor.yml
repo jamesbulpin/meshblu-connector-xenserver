@@ -28,9 +28,6 @@ before_deploy:
       }
   - npm prune --production
   - npm install meshblu-connector-packager
-  - npm dedupe
-  - npm install -g flatten-packages
-  - flatten-packages
   - npm run generate:package
   - npm run generate:schema
   - ps: $root = Resolve-Path deploy; [IO.Directory]::GetFiles($root.Path, '*.*', 'AllDirectories') | % { Push-AppveyorArtifact $_ -FileName $_.Substring($root.Path.Length + 1) -DeploymentName Connector }
