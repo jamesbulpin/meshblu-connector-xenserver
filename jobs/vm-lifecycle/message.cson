@@ -1,0 +1,15 @@
+title: 'Execute a VM lifecycle operation'
+type: 'object'
+properties:
+  data:
+    type: 'object'
+    properties:
+      name:
+        type: 'string'
+      uuid:
+        type: 'string'
+      operation:
+        type: 'string'
+    required: [
+      'operation'
+    ]
