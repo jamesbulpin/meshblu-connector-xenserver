@@ -17,6 +17,7 @@ describe 'VmLifecycle', ->
       message =
         data:
           name: 'TestVM'
+          operation: "start"
       @sut = new job {@connector}
       @sut.do message, (@error) =>
         debug @error
