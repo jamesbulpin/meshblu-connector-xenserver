@@ -45,7 +45,8 @@
     "meshblu-config": "^4.0.0",
     "meshblu-connector-runner": "^8.1.1",
     "meshblu-connector-schema-generator": "^2.1.0",
-    "xen-api": "^0.9.5"
+    "xen-api": "^0.9.5",
+    "run-series": "^1.1.4"
   },
   "meshbluConnector": {
     "githubSlug": "jamesbulpin/meshblu-connector-xenserver"

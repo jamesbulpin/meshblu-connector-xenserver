@@ -19,29 +19,27 @@ class VmLifecycle
 
     @connector.getXapi().then((xapi) =>
       # Look up the VM by name or UUID (based on what the user supplied - if both, favour the more precise UUID)
-      if uuid
-        api = 'VM.get_by_uuid'
-        param = uuid
-      else
-        api = 'VM.get_by_name_label'
-        param = name
-        
-      #console.log("Calling " + api + "(" + param + ")")
-      xapi.call(api, param).then((result) =>
-        #console.log("API returned " + result)
+      lookuplist = []
+      lookupvm = {
+        class: "VM"
+        uuid: uuid
+        name: name
+      }
+      lookuplist.push(lookupvm)
+      
+      @connector.findObjects(lookuplist).then((results) =>
         vmref = null
-        if result
-          if typeof(result) == 'string'
-            # VM.get_by_uuid returns a single string
-            vmref = result
-          else
-            # VM.get_by_name_label returns a list of strings - use the first one   
-            if result.length > 0
-              vmref = result[0]
+        if results
+          if results[0]
+            if results[0].length > 0
+              vmref = results[0][0]
               
-        #console.log("VMref " + vmref)              
+        debug("VMref " + vmref)              
         if !vmref
-          message = "Cannot find VM " + param
+          if uuid
+            message = "Cannot find VM " + uuid
+          else
+            message = "Cannot find VM " + name
           status = "error"
           data = {message, status}
           callback null, {metadata, data}
@@ -55,7 +53,10 @@ class VmLifecycle
           
         xapi.call.apply(xapi, callargs).then((response) =>
       
-          message = "Executed VM " + operation + " on " + param
+          if uuid
+            message = "Executed VM " + operation + " on " + uuid
+          else
+            message = "Executed VM " + operation + " on " + name
           status = "ok"
           data = {message, status}
       
@@ -71,7 +72,8 @@ class VmLifecycle
           callback null, {metadata, data}
         )
       ).catch((error) =>
-        message = "Error looking up VM " + param
+        console.log error
+        message = error
         status = "error"
         data = {message, status}
         callback null, {metadata, data}
