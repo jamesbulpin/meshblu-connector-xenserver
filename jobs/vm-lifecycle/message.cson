@@ -10,6 +10,8 @@ properties:
         type: 'string'
       operation:
         type: 'string'
+      destination:
+        type: 'string'
     required: [
       'operation'
     ]

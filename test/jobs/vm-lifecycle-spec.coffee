@@ -36,3 +36,17 @@ describe 'VmLifecycle', ->
 
     it 'should error', ->
       expect(@error).to.exist
+
+  context 'when no destination is given for a migrate', ->
+    beforeEach (done) ->
+      @connector = {}
+      message =
+        data:
+          name: 'TestVM'
+          operation: "migrate"
+      @sut = new job {@connector}
+      @sut.do message, (@error) =>
+        done()
+
+    it 'should error', ->
+      expect(@error).to.exist

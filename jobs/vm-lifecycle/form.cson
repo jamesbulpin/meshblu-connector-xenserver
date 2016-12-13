@@ -2,4 +2,5 @@ angular: [
   { key: "data.name" }
   { key: "data.uuid" }
   { key: "data.operation" }
+  { key: "data.destination" }
 ]
