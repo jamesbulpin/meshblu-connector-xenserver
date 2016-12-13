@@ -47,19 +47,19 @@ class Connector extends EventEmitter
         debug ("API returned " + result)
         if result
           if typeof(result) == 'string'
-            # VM.get_by_uuid returns a single string
+            # get_by_uuid returns a single string
             callback null, [result]
             return
           else
-            # VM.get_by_name_label returns a list of strings - use the first one   
+            # get_by_name_label returns a list of strings   
             if result.length > 0
               callback null, result
               return
-        callback "Cannot find VM " + param, null
+        callback "Cannot find " + xapiclass + " " + param, null
         return
       ).bind(null, callback, param)
       ).catch(((callback, param, error) =>
-        message = "Error looking up VM " + param
+        message = "Error looking up " + xapiclass + " " + param
         callback message, null
         return
       ).bind(null, callback, param)
@@ -81,10 +81,7 @@ class Connector extends EventEmitter
       ).bind(null, @_findObject)
       return new Promise((resolve, reject) =>
         series actions, (err, result) ->
-          if err
-            reject err
-          else
-            resolve result
+          resolve result
       )
     ).catch((error) =>
       debug "XenServer connection not available"
