@@ -1,0 +1,13 @@
+title: 'Execute a general API call'
+type: 'object'
+properties:
+  data:
+    type: 'object'
+    properties:
+      api:
+        type: 'string'
+      params:
+        type: 'string'
+    required: [
+      'api'
+    ]
