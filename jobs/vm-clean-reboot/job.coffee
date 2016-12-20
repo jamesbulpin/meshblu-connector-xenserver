@@ -24,7 +24,7 @@ class VmCleanReboot
           callback null, {metadata, data}
           return
               
-        xapi.call('VM.clean_reboot', vmref[0], false, false).then((response) =>
+        xapi.call('VM.clean_reboot', vmref[0]).then((response) =>
       
           message = "Performed clean reboot on VM " + name
           status = "ok"
