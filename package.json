@@ -1,6 +1,6 @@
 {
   "name": "meshblu-connector-xenserver",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "XenServer Meshblu Connector",
   "homepage": "https://github.com/jamesbulpin/meshblu-connector-xenserver",
   "bugs": "https://github.com/jamesbulpin/meshblu-connector-xenserver/issues",
