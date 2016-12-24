@@ -1,0 +1,11 @@
+title: 'Start a VM'
+type: 'object'
+properties:
+  data:
+    type: 'object'
+    properties:
+      name:
+        type: 'string'
+    required: [
+      'name'
+    ]
