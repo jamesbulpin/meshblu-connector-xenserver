@@ -1,0 +1,14 @@
+title: 'VM - Action: Copy a Stopped VM'
+type: 'object'
+properties:
+  data:
+    type: 'object'
+    properties:
+      message:
+        type: 'string'
+      status:
+        type: 'string'
+    required: [
+      'message',
+      'status'
+    ]
