@@ -9,6 +9,7 @@ class VmActionCopy
     return callback @_userError(422, 'data.name is required') unless data?.name?
     
     {name} = data
+    {storagerepositoryname} = data
 
     metadata =
       code: 200
@@ -23,10 +24,13 @@ class VmActionCopy
           data = {message, status}
           callback null, {metadata, data}
           return
+	
+
+
               
-        xapi.call('VM.copy', vmref[0], name + " Copy by Octoblu", name).then((response) =>
+        xapi.call('VM.copy', vmref[0], name + " Copy by Octoblu", storagerepositoryname).then((response) =>
       
-          message = "VM Copy on " + name
+          message = "VM Copy of " + name + " on " + "the current storage repository."
           status = "ok"
           data = {message, status}
       
@@ -48,6 +52,9 @@ class VmActionCopy
       data = {message, status}
       callback null, {metadata, data}
       return
+
+
+
     )
       
   _userError: (code, message) =>

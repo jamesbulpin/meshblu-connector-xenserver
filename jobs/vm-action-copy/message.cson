@@ -6,6 +6,8 @@ properties:
     properties:
       name:
         type: 'string'
+      storagerepositoryname:
+        type: 'string'
     required: [
       'name'
     ]
