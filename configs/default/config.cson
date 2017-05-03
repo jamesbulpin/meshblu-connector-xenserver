@@ -14,6 +14,34 @@ properties:
       password:
         title: "XenServer password"
         type: "string"
+      hostmetrics:
+        title: "Server metrics to stream"
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            data_source:
+              title: "Data source name"
+              type: "string"
+              description: "Name of the data source to stream. Use the CLI to get a list: (xe host-data-source-list)"
+              required: true
+            aggregate:
+              title: "Aggregation function"
+              description: "How to aggregate soucres from multiple hosts"
+              type: "string"
+              enum: [
+                "mean"
+                "sum"
+              ]
+              required: true
+            interval:
+              title: "Transmission interval"
+              description: "How often is this metric sent? Internal in milliseconds"
+              type: "integer"
+          required: [
+            "data_source"
+            "aggregate"
+          ]
     required: [
       "serveraddress",
       "username",

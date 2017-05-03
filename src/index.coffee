@@ -6,6 +6,7 @@ series          = require 'run-series'
 class Connector extends EventEmitter
   constructor: ->
     @xapi = null
+    @intervals = {}
     
   mockXapi: (xapi) ->
     
@@ -99,8 +100,25 @@ class Connector extends EventEmitter
     { @serveraddress } = device.options ? {}
     { @username } = device.options ? {}
     { @password } = device.options ? {}
-    debug 'on config'
- 
+    debug 'on config', device.options
+
+    # Kill any existing metrics intervals
+    for metric, interval of @intervals
+      debug 'Killing interval loop for', metric
+      clearInterval interval
+      delete @intervals[metric]
+    
+    # Create any new intervals
+    if device.options? and device.options.hostmetrics?
+      for hm in device.options.hostmetrics
+        if hm?.data_source?
+          data_source = hm.data_source
+          aggregate = hm.aggregate ? "sum"
+          interval = hm.interval ? 5000
+          debug 'Creating metric streaming of ' + data_source + ' (' + aggregate + ') every ' + interval + 'ms'
+          clearInterval @intervals[data_source] if data_source of @intervals
+          @intervals[data_source] = setInterval(@intervalHandler.bind(null, data_source, aggregate), interval)
+      
   start: (device, callback) =>
     debug 'started'
     @onConfig device
@@ -108,5 +126,57 @@ class Connector extends EventEmitter
       debug "Initial connection complete"
     )
     callback()
+
+  _getMetric: (xapi, hostref, data_source, callback) =>
+    debug 'About to query data source on host', hostref, data_source
+    xapi.call("host.query_data_source", hostref, data_source).then(((callback, result) =>
+      debug ("host.query_data_source API returned " + result)
+      if result
+        return callback null, result
+      message = "No data returned fetching metric " + data_source + " from " + hostref
+      callback message, null
+    ).bind(null, callback)
+    ).catch(((callback, error) =>
+      message = "Error fetching metric " + data_source + " from " + hostref + ": " + error
+      callback message, null
+      return
+    ).bind(null, callback)
+    )
     
+  intervalHandler: (data_source, aggregate) =>
+    debug 'intervalHandler', data_source, aggregate
+      
+    # Get the data_source value from each host and aggregate as instructed
+    @getXapi().then((xapi) =>
+      xapi.call('host.get_all').then((hosts) =>
+        actions = []
+        for hostref in hosts
+          actions.push(@_getMetric.bind(null, xapi, hostref, data_source))
+        series actions, ((connector, err, result) ->
+          debug 'intervalHandler error', err if err
+          if result
+            agg = undefined
+            debug 'Got values for ' + data_source, result
+            switch aggregate
+              when 'sum'
+                agg = result.reduce ((a, b) ->
+                  a + b
+                ), 0
+              when 'mean'
+                agg = result.reduce ((a, b) ->
+                  a + b
+                ), 0
+                agg =  agg/result.length
+            if agg != undefined
+              connector.emit 'message', { devices: "*", data: {data_source:data_source, aggregate:aggregate, value:agg}}
+        ).bind(null, this)
+      ).catch((error) =>
+        debug "Error looking up hosts for metrics:", error
+        return null
+      )
+    ).catch((error) =>
+      debug "XenServer connection not available"
+      return null
+    ) 
+
 module.exports = Connector
