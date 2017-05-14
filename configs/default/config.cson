@@ -14,6 +14,9 @@ properties:
       password:
         title: "XenServer password"
         type: "string"
+      credskey:
+        title: "Username/password key location"
+        type: "string"
       hostmetrics:
         title: "Server metrics to stream"
         type: "array"
@@ -36,7 +39,7 @@ properties:
               required: true
             interval:
               title: "Transmission interval"
-              description: "How often is this metric sent? Internal in milliseconds"
+              description: "How often is this metric sent? Interval in milliseconds"
               type: "integer"
           required: [
             "data_source"

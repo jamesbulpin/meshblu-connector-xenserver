@@ -2,6 +2,8 @@
 debug           = require('debug')('meshblu-connector-xenserver:index')
 xenapi          = require 'xen-api'
 series          = require 'run-series'
+NodeRSA         = require 'node-rsa'
+fs              = require 'fs'
 
 class Connector extends EventEmitter
   constructor: ->
@@ -9,7 +11,15 @@ class Connector extends EventEmitter
     @intervals = {}
     
   mockXapi: (xapi) ->
-    
+
+  getCredentials: ->
+    if @credskey?
+      data = fs.readFileSync @credskey, 'utf8'
+      key = new NodeRSA(data)
+      return { username: key.decrypt(@username, 'utf8'), password: key.decrypt(@password, 'utf8') }
+    else
+      return { username: @username, password: @password }
+
   getXapi: ->
     return new Promise((resolve, reject) =>
       if @xapi && (@xapi.status == "connected")
@@ -21,9 +31,7 @@ class Connector extends EventEmitter
           @xapi.disconnect()
         @xapi = xenapi.createClient(
           url: @serveraddress
-          auth:
-            user: @username
-            password: @password
+          auth: @getCredentials()
           readOnly: false)
         @mockXapi @xapi
         @xapi.connect().then((result) =>
@@ -100,6 +108,7 @@ class Connector extends EventEmitter
     { @serveraddress } = device.options ? {}
     { @username } = device.options ? {}
     { @password } = device.options ? {}
+    { @credskey } = device.options ? {}
     debug 'on config', device.options
 
     # Kill any existing metrics intervals
