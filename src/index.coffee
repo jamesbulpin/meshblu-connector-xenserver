@@ -12,13 +12,17 @@ class Connector extends EventEmitter
     
   mockXapi: (xapi) ->
 
-  getCredentials: ->
+  getCredentials: =>
     if @credskey?
-      data = fs.readFileSync @credskey, 'utf8'
-      key = new NodeRSA(data)
-      return { username: key.decrypt(@username, 'utf8'), password: key.decrypt(@password, 'utf8') }
+      try
+        debug 'Using decryption key', @credskey
+        data = fs.readFileSync @credskey, 'utf8'
+        key = new NodeRSA(data, "public")
+        return { user: key.decryptPublic(@username, 'utf8'), password: key.decryptPublic(@password, 'utf8') }
+      catch error
+        debug 'Key decryption error', error
     else
-      return { username: @username, password: @password }
+      return { user: @username, password: @password }
 
   getXapi: ->
     return new Promise((resolve, reject) =>
@@ -26,12 +30,15 @@ class Connector extends EventEmitter
         debug "getXapi returning existing connection"
         resolve(@xapi)
       else
-        debug "Connecting to " + @serveraddress + " as " + @username + "/" + @password
+        creds = @getCredentials()
+        debug "Connecting to " + @serveraddress + " as " + creds.user + "/" + creds.password
         if @xapi
           @xapi.disconnect()
         @xapi = xenapi.createClient(
           url: @serveraddress
-          auth: @getCredentials()
+          auth:
+            user: creds.user
+            password: creds.password
           readOnly: false)
         @mockXapi @xapi
         @xapi.connect().then((result) =>
