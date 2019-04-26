@@ -6,12 +6,15 @@
   },
   "item": [
     {
-      "_postman_id": "447325-2faad7b5-5ba4-5b96-79dd-dd80ac52ce5c",
       "name": "http://root:Citrix1@192.168.100.35/rrd_updates?start=1462838400&host=true",
+      "_postman_id": "447325-2faad7b5-5ba4-5b96-79dd-dd80ac52ce5c",
       "request": {
         "method": "GET",
         "header": [],
-        "body": {},
+        "body": {
+          "mode": "formdata",
+          "formdata": []
+        },
         "url": {
           "raw": "http://root:Citrix1@192.168.100.35/rrd_updates?start=1462838400&host=true",
           "protocol": "http",
