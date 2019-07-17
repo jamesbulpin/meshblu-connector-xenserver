@@ -1,49 +1,65 @@
 {
+  "swagger": "2.0",
   "info": {
-    "_postman_id": "447325-db86b6b1-4cf2-7700-9866-1889a68c1f41",
-    "name": "XenServer",
-    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+    "version": "1.0",
+    "title": "XenServer",
+    "description": "TODO: Add Description",
+    "contact": {}
   },
-  "item": [
-    {
-      "name": "http://root:Citrix1@192.168.100.35/rrd_updates?start=1462838400&host=true",
-      "_postman_id": "447325-2faad7b5-5ba4-5b96-79dd-dd80ac52ce5c",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "body": {
-          "mode": "formdata",
-          "formdata": []
-        },
-        "url": {
-          "raw": "http://root:Citrix1@192.168.100.35/rrd_updates?start=1462838400&host=true",
-          "protocol": "http",
-          "host": [
-            "192",
-            "168",
-            "100",
-            "35"
-          ],
-          "auth": {
-            "user": "root",
-            "password": "Citrix1"
+  "host": "192.168.100.35",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/rrd_updates": {
+      "get": {
+        "description": "TODO: Add Description",
+        "summary": "http://root:Citrix1@192.168.100.35/rrd_updates?start=1462838400&host=true",
+        "tags": [
+          "Misc"
+        ],
+        "operationId": "RrdUpdatesGet",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": ""
           },
-          "path": [
-            "rrd_updates"
-          ],
-          "query": [
-            {
-              "key": "start",
-              "value": "1462838400"
-            },
-            {
-              "key": "host",
-              "value": "true"
-            }
-          ]
+          {
+            "name": "host",
+            "in": "query",
+            "required": true,
+            "type": "boolean",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
         }
-      },
-      "response": []
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Misc",
+      "description": ""
     }
   ]
 }
