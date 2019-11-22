@@ -25,7 +25,7 @@
         "tags": [
           "Misc"
         ],
-        "operationId": "RrdUpdatesGet",
+        "operationId": "http://root:Citrix1@192.168.100.35/rrd_updates?start=1462838400&host=true",
         "deprecated": false,
         "produces": [
           "application/json"
