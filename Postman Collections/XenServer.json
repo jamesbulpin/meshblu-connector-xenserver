@@ -3,7 +3,6 @@
   "info": {
     "version": "1.0",
     "title": "XenServer",
-    "description": "TODO: Add Description",
     "contact": {}
   },
   "host": "192.168.100.35",
@@ -20,7 +19,6 @@
   "paths": {
     "/rrd_updates": {
       "get": {
-        "description": "TODO: Add Description",
         "summary": "http://root:Citrix1@192.168.100.35/rrd_updates?start=1462838400&host=true",
         "tags": [
           "Misc"
