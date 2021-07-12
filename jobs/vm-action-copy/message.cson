@@ -1,0 +1,13 @@
+title: 'VM - Action: Copy a Stopped VM'
+type: 'object'
+properties:
+  data:
+    type: 'object'
+    properties:
+      name:
+        type: 'string'
+      storagerepositoryname:
+        type: 'string'
+    required: [
+      'name'
+    ]
