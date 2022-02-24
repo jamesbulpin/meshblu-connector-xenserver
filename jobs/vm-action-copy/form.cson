@@ -1,0 +1,4 @@
+angular: [
+  { key: "data.name" }
+  #{ key: "data.storagerepositoryname" }
+]
